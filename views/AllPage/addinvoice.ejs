@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="JSBootstrapFile/css/bootstrap.css">
+  <link rel="stylesheet" href="fonter/css/all.min.css">
+  <style>
+    .inp_invoice {
+      border: none;
+      outline: none;
+      font-weight: 500;
+    }
+  </style>
+</head>
+
+<body style="background-color: #e6f0fc; font-weight: 600;">
+
+  <%- include('../components/nav1.ejs', { addnone: "block" }) %>
+
+
+    <div class="container mt-3" style="direction: rtl;">
+
+      <ul class="list-group mt-4" style="left: 20px; position: relative;">
+        <!-- top invoce -->
+        <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-danger">
+          <div style="width: 50%; text-align: center;">
+            الوصف
+          </div>
+          <div class="vr"></div>
+
+          <div style="width: 50%; text-align: center;">
+            المبلغ
+          </div>
+        </li>
+
+
+        <!--** body invoce **-->
+        <div id="body_invoice">
+
+        </div>
+        <!--** body invoce **-->
+
+
+        <!-- end invoce -->
+        <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary">
+        <button onclick="addinp()" type="button" style=" right: 0%; background: none; border: none;"><i class="fa-solid fa-circle-plus fa-xl" style="color: #8f0000;"></i></button>
+
+          <div style="width: 55%; text-align: center;">
+            التاريخ:
+            <small class="text-success">
+              11/5/2024
+            </small>
+          </div>
+          <div class="vr"></div>
+          <div style="width: 45%; text-align: center;">
+            <small class="text-danger">
+              564655
+            </small>
+          </div>
+
+
+        </li>
+
+      </ul>
+
+    </div>
+
+
+
+    <script src="JSBootstrapFile/popper/popper.js"></script>
+    <script src="JSBootstrapFile/js/bootstrap.js"></script>
+    <script>
+      let bodyinvoice = document.getElementById("body_invoice")
+
+      let index = 0;
+
+      function addinp() {
+        index++;
+
+        const newLi = document.createElement('li');
+        newLi.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center','mt-2','mb-2');
+        newLi.id = `inp_${index}`;
+
+        const newInputtitle = document.createElement('input');
+        newInputtitle.classList.add('inp_invoice');
+        newInputtitle.type = 'text';
+        newInputtitle.style.width = '50%';
+        newInputtitle.style.textAlign = 'center';
+        newInputtitle.style.background = 'none';
+
+        const newInputmoney = document.createElement('input');
+        newInputmoney.classList.add('inp_invoice');
+        newInputmoney.type = 'text';
+        newInputmoney.style.width = '50%';
+        newInputmoney.style.textAlign = 'center';
+        newInputmoney.style.background = 'none';
+
+        // إضافة الفئة 'vr' إلى div
+        const vrDiv = document.createElement('div');
+        vrDiv.classList.add('vr');
+
+        newLi.appendChild(newInputtitle);
+        newLi.appendChild(vrDiv);
+        newLi.appendChild(newInputmoney);
+
+        bodyinvoice.appendChild(newLi);
+
+      }
+      addinp()
+
+    </script>
+</body>
+
+</html>
