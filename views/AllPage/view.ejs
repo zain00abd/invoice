@@ -18,6 +18,7 @@
 </head>
 
 <body style="background-color: rgb(230, 240, 252); font-weight: 600;">
+  <%- include('../components/nav1.ejs',{addnone:"block"}) %>
   <form action="/edit/<%= arr._id %>?_method=PUT" method="post">
     <p class="d-none" id="date_today">
     </p>
@@ -26,7 +27,6 @@
     </p>
     <input class="d-none" name="arrinvoce" type="text" value="<%= arr.arrinvoce %>" id="inp_ReqAdd_invoice">
 
-    <%- include('../components/nav1.ejs',{addnone:"block"}) %>
 
 
       <div class="container mt-3" style="direction: rtl;">
@@ -34,8 +34,8 @@
           <div>الاسم:<input type="text" value="<%= arr.name %>" name="name" readonly></div>
           <div>العنوان:<input type="text" value="<%= arr.addres %>" name="addres" readonly></div>
           <div>الهاتف:<input type="text" value="<%= arr.phone %>" name="phone" readonly></div>
-          <div class="d-none">invoicesprice:<input type="number" id="inp_allinvoice" value="<%= arr.invoicesprice %>" name="invoicesprice" readonly></div>
-          <div class="d-none">invoicespay:<input type="number" id="inp_paymoney" value="<%= arr.invoicespay %>" name="invoicespay" readonly></div>
+          <div class="">invoicesprice:<input type="number" id="inp_allinvoice" value="<%= arr.invoicesprice %>" name="invoicesprice" readonly></div>
+          <div class="">invoicespay:<input type="number" id="inp_paymoney" value="<%= arr.invoicespay %>" name="invoicespay" readonly></div>
 
 
         </div>
@@ -204,10 +204,10 @@
 
             <a class="d-none" href="/view/<%= arr._id %>" role="button" id="btn_close"> الغاء </a>
           </div>
-
+          
         </li>
       </ul>
-      <button class="d-none" type="submit" id="myForm"></button>
+      <button class="d-none" type="submit" id="myForm" onclick="console.log('hello')"></button>
   </form>
 
 
@@ -286,7 +286,7 @@
       newInputtitle.type = 'text'
       newInputtitle.id = `inv_text_${index}`
       newInputtitle.setAttribute("onkeyup", "setarr(this.value,this.id)")
-      newInputtitle.setAttribute("required", "");
+      // newInputtitle.setAttribute("required", "");
       newInputtitle.setAttribute("autocomplete", "off");
 
 
@@ -304,7 +304,7 @@
       newInputmoney.id = `inv_num_${index}`
       newInputmoney.setAttribute("onkeyup", "setarr(this.value,this.id)")
       // newInputmoney.setAttribute("onkeyup", "plusarr()")
-      newInputmoney.setAttribute("required", "");
+      // newInputmoney.setAttribute("required", "");
 
 
 
@@ -407,7 +407,7 @@
       const day = currentDate.getDate();
       const month = currentDate.getMonth() + 1; // يبدأ الشهر من 0، لذلك نقوم بإضافة 1
       const year = currentDate.getFullYear();
-      const dateFormatted = `${day+9}/${month}/${year}`;
+      const dateFormatted = `${day}/${month}/${year}`;
 
 
       // الساعة
@@ -453,6 +453,7 @@
 
         if (arrAllInvoice.length != 0) {
 
+          console.log(arrAllInvoice)
           if (lastindexarr.date == String(dateFormatted)) {
 
             lastindexarr.description = [...lastindexarr.description, ...filterarrtext]
@@ -541,14 +542,14 @@
       }
 
 
-      function datature() {
-        inpReqAddinvoice.value = JSON.stringify(arrAllInvoice)
-        document.getElementById('myForm').click()
-      }
       // JSON.parse(inpReqAddinvoice.value)
-
-
-
+      
+      
+      
+    }
+    function datature() {
+      inpReqAddinvoice.value = JSON.stringify(arrAllInvoice)
+      document.getElementById('myForm').click()
     }
 
 
