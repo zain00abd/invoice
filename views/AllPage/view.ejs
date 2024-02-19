@@ -34,8 +34,8 @@
           <div>الاسم:<input type="text" value="<%= arr.name %>" name="name" readonly></div>
           <div>العنوان:<input type="text" value="<%= arr.addres %>" name="addres" readonly></div>
           <div>الهاتف:<input type="text" value="<%= arr.phone %>" name="phone" readonly></div>
-          <div class="">invoicesprice:<input type="number" id="inp_allinvoice" value="<%= arr.invoicesprice %>" name="invoicesprice" readonly></div>
-          <div class="">invoicespay:<input type="number" id="inp_paymoney" value="<%= arr.invoicespay %>" name="invoicespay" readonly></div>
+          <div class="d-none">invoicesprice:<input type="number" id="inp_allinvoice" value="<%= arr.invoicesprice %>" name="invoicesprice" readonly></div>
+          <div class="d-none">invoicespay:<input type="number" id="inp_paymoney" value="<%= arr.invoicespay %>" name="invoicespay" readonly></div>
 
 
         </div>
@@ -314,7 +314,8 @@
       newLi.appendChild(newInputtitle);
       newLi.appendChild(vrDiv);
       newLi.appendChild(newInputmoney);
-
+      
+      
       if (G_invoce == 'inv_unprice') {
         arrindex++
         newLi.classList.add('list-group-item-danger');
@@ -334,7 +335,7 @@
       }
       InvNewinp.appendChild(newLi)
 
-
+      newInputtitle.focus()
       window.scrollTo(0, document.body.scrollHeight);
       index++;
     }
@@ -353,10 +354,6 @@
   </script>
 
   <script>
-
-    // console.log(datetoday[1])
-
-    localStorage.setItem("name", "zain")
 
     let arrtext = []
     let arrnum = []
