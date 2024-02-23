@@ -6,6 +6,7 @@
     <title>Home</title>
     <link rel="stylesheet" href="JSBootstrapFile/css/bootstrap.css">
     <link rel="stylesheet" href="/fonter/css/all.min.css">
+    <link rel="stylesheet" href="/stylecss/styindex.css">
 </head>
 <body style="background-color: #e6f0fc;">
   <%- include('./components/nav1',{addnone : "block"}) %>
@@ -16,9 +17,9 @@
         <% arr.forEach(user => { %>
          
           <ul class="list-group">
-              <li class="list-group-item d-flex justify-content-between" style="font-weight: 600; margin: 5px; margin-top: 10px;">
+              <li class="list-group-item d-flex justify-content-between" style="font-weight: 600; margin: 5px; margin-top: 10px;" id="div_user">
                 <div class=" d-flex justify-content-between" style="display: flex; width: 45%;">
-                  <a href="/addinvoice" class=""><i class="fa-solid fa-circle-info fa-2xl" style="color: #dbac00;"></i></a>
+                  <a href="/info/<%= user._id %>" class=""><i class="fa-solid fa-circle-info fa-2xl" style="color: #dbac00;"></i></a>
                   <div class="vr"></div>
                   <a href="/view/<%= user._id %>" class="col-6  badge bg-danger rounded-pill" style="font-size:14px; letter-spacing: 1.3px; text-decoration: none;"> <%= user.invoicesprice - user.invoicespay %> </a>
                 </div>
@@ -38,18 +39,17 @@
 </button>
 
 <!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="direction: rtl;">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">اسم المستخدم</h1>
+        <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
       </div>
       <div class="modal-body">
         <div class="mb-3">
-          <label for="exampleInputEmail1" class="form-label">Email address</label>
+          <label for="exampleInputEmail1" class="form-label"> يرجى ادخال اسمك هنا </label>
           <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-          <div id="emailHelp" class="form-text"> يرجى ادخال اسمك هنا </div>
         </div>
       </div>
       <div class="modal-footer">
@@ -74,6 +74,61 @@
           document.getElementById("btn_cname").click()
         }
       }
+
+      
     </script>
+
+<!-- <script>
+  var divUsers = document.querySelectorAll('[id^="div_user"]');
+  var longPressTimer;
+  var isFirstItemSelected = false;
+
+  divUsers.forEach(function(divUser, index) {
+      var isSelected = false;
+
+      // سلوك النقر
+      divUser.addEventListener('click', function() {
+          if (!isFirstItemSelected) {
+              // تحديد العنصر بالضغط العادي إذا لم يتم تحديد العنصر الأول بعد
+              if (!isSelected) {
+                  divUser.classList.add('selected');
+                  isSelected = true;
+              } else {
+                  divUser.classList.remove('selected');
+                  isSelected = false;
+              }
+          } else {
+              // تحديد العنصر بالضغط المطول إذا تم تحديد العنصر الأول بالفعل
+              if (!isSelected) {
+                  divUser.classList.add('selected');
+                  isSelected = true;
+              } else {
+                  divUser.classList.remove('selected');
+                  isSelected = false;
+              }
+          }
+      });
+
+      // منع تنفيذ سلوك النقر العادي عند الضغط المطول
+      divUser.addEventListener('mousedown', function(event) {
+          if (!isFirstItemSelected) {
+              longPressTimer = setTimeout(function() {
+                  divUser.classList.add('selected');
+                  isSelected = true;
+              }, 1000); // تحديد مدة الضغط المطول بثانية واحدة
+          }
+      });
+
+      // إلغاء مؤقت الضغط المطول عند الفصل
+      divUser.addEventListener('mouseup', function(event) {
+          clearTimeout(longPressTimer);
+          if (!isFirstItemSelected) {
+              isFirstItemSelected = true;
+          }
+      });
+  });
+</script> -->
+
+
 </body>
 </html>

@@ -36,7 +36,7 @@ app.get('/view/:id', (req, res) => {
     dataS.findById(req.params.id)
     .then((result) =>{
 
-        res.render("AllPage/view.ejs", { arr: result, })
+        res.render("AllPage/view.ejs", { arr: result })
     })
     .catch((err) =>{
         console.log(err)
@@ -56,8 +56,28 @@ app.put('/edit/:id', (req, res) => {
 });
 
 
-app.get('/addinvoice', (req, res) => {
-    res.render("AllPage/addinvoice.ejs")
+app.get('/info/:id', (req, res) => {
+    dataS.findById(req.params.id)
+    .then((result) =>{
+
+        res.render("AllPage/addinvoice.ejs", { user: result })
+        
+    })
+    .catch((err) =>{
+        console.log(err)
+    })
+
+})
+
+app.delete('/delet/:id',(req,res) =>{
+    dataS.findByIdAndDelete(req.params.id)
+    .then(() =>{
+        res.redirect("/")
+
+    })
+    .catch((err) =>{
+        console.log(err)
+    })
 })
 
 // post requst
@@ -72,9 +92,8 @@ app.post("/adduser", (req,res) =>{
 
 })
 
-app.post('/search', (req, res) => {
 
-    
+app.post('/search', (req, res) => {
     const searchtext = req.body.textsearch
     dataS.find({$or: [{ name:searchtext }, { addres:searchtext }]})
         .then((result) => {
@@ -85,6 +104,8 @@ app.post('/search', (req, res) => {
             console.error(error);
         });
 });
+
+
 
 
 mongoose.connect("mongodb+srv://zaindiv:SK7A2fOZbLeJ08Ix@cluster0.32r5dqe.mongodb.net/all-data?retryWrites=true&w=majority")

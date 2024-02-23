@@ -47,7 +47,10 @@
 
             <% for( let index=0; index < arrlop.length; index++ ) { %>
 
-                    <ul class="list-group mb-4 mt-4 <%= index == arrlop.length-1 ? "opacity-100 shadow-lg bg-body-tertiary rounded" : "opacity-50" %>" style="padding: 0px;">
+                    <ul class="list-group mb-4 mt-4
+                    <%= index == arrlop.length-1 ? "opacity-100 shadow-lg bg-body-tertiary rounded" : "" %>"
+                    style="padding: 0px; <%= index != arrlop.length-1 ? "opacity:65%;" : "" %>"
+                    >
 
                       <!-- top invoce -->
                       <li
