@@ -41,9 +41,11 @@
         </div>
 
         <!-- style requst invoice -->
+        <% let totalAll = 0; %>
         <% if (arr.arrinvoce !='' ){ %>
 
           <% let arrlop=JSON.parse(arr.arrinvoce) %>
+          <% let totalAllinvoice = 0; %>
 
             <% for( let index=0; index < arrlop.length; index++ ) { %>
 
@@ -72,23 +74,59 @@
 
 
                       <!--** body invoce **-->
+                      <% let totalinvoice = 0; %>
+                      <% let isoneinv = false %>
+
                       <% for( let i=0; i < arrlop[index].description.length; i++ ) { %>
 
+
+
                         <div>
-                          <li class="list-group-item d-flex justify-content-between align-items-center <%= arrlop[index].description[i] == "تسديد مبلغ" ? "list-group-item-success" : "" %> <%= arrlop[index].description[i] == "الفاتورة السابقة" ? "list-group-item-warning" : "" %> <%= arrlop[index].description[i] != "الفاتورة السابقة" && arrlop[index].description[i] != "تسديد مبلغ" ? "list-group-item-danger" : "" %>">
-                            <div style="width: 50%; text-align: center;" id="inv_Ms"><%=arrlop[index].description[i]%></div>
+
+                          <% let dis  %>
+                          <% let mon %>
+                          <% let useR %>
+                          <% let dateo %>
+                          <% if (index > 0 && i == 0 && !isoneinv) { %>
+
+                           <% dis = "الفاتورة السابقة" %>
+                           <% mon = totalAllinvoice %>
+                           <% useR = arrlop[index-1].date %>
+                           <% dateo = '' %>
+                           <% isoneinv = true %>
+                           <% i-- %>
+                           
+                           <% } else { %>
+
+                            <% dis = arrlop[index].description[i] %>
+                            <% mon = arrlop[index].money[i] %>
+                            <% useR = arrlop[index].user[i] %>
+                            <% dateo = arrlop[index].dateofregistration[i] %>
+
+                          <% } %>
+
+                          <% if (arrlop[index].description[i] != 'تسديد مبلغ') { %>
+                         
+                            <% totalinvoice += mon %>
+                            <% } else { %>
+                              <% totalinvoice -= mon %>
+                          <% } %>
+
+
+                          <li class="list-group-item d-flex justify-content-between align-items-center <%= dis == "تسديد مبلغ" ? "list-group-item-success" : "" %> <%= dis == "الفاتورة السابقة" ? "list-group-item-warning" : "" %> <%= dis != "الفاتورة السابقة" && dis != "تسديد مبلغ" ? "list-group-item-danger" : "" %>">
+                            <div style="width: 50%; text-align: center;" id="inv_Ms"><%= dis %></div>
                             <div class="vr"></div>
-                            <div style="width: 50%; text-align: center;" id="inv_Ms"><%= arrlop[index].money[i] %></div>
+                            <div style="width: 50%; text-align: center;" id="inv_Ms"><%= mon %></div>
                             <div class="vr"></div>
                             <div class="dropend" style="width: 50%; text-align: center;">
                               <button style="border: none; outline: none; background: none; font-weight: 500;"
                                 data-bs-toggle="dropdown">
-                                <%= arrlop[index].user[i] %>
+                                <%= useR %>
                               </button>
                               <div class="dropdown-menu" style="width: 1%; background: none; border: none;">
                                 <p
                                   style="background-color: rgb(68, 0, 0); width: auto; margin-right: 100px; text-align: center; color: #ffffff; border-radius: 18px;">
-                                  <%= arrlop[index].dateofregistration[i] %>
+                                  <%= dateo %>
                                 </p>
                               </div>
                             </div>
@@ -96,6 +134,9 @@
                         </div>
 
                         <% } %>
+                        <% totalAllinvoice = totalinvoice %>
+                        <% totalAll = totalAllinvoice %>
+
                           <!--** body invoce **-->
 
 
@@ -109,7 +150,7 @@
                             <div style="width: 50%; text-align: center;">
                               الاجمالي:
                               <small class="text-danger">
-                                <%= arrlop[index].total %>
+                                <%= totalinvoice %>
                               </small>
                             </div>
                           </li>
@@ -183,8 +224,9 @@
               <button style="width: 100%; font-weight: 600; letter-spacing: 1.1px;" class="btn btn-danger" type="button"
                 data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="fa-solid fa-sack-dollar fa-lg" style="color: #ffffff;"></i>
-                <%= arr.invoicesprice - arr.invoicespay%>
+                <%= totalAll %>
               </button>
+              <small class="d-none" id="ttt-1"><%=totalAll%></small>
               <ul class="dropdown-menu">
                 <li>
                   <button type="button" id="inv_price" onclick="addinp(this.id)"
@@ -219,6 +261,8 @@
   <script src="/JSBootstrapFile/js/bootstrap.js"></script>
 
   <script>
+
+    let suminvoice = +document.getElementById("ttt-1").innerHTML
 
     let datetoday = document.getElementById('date_today').innerHTML.split("|")
     let datetoday1 = document.getElementById('date_today').innerHTML.split("|")
@@ -407,7 +451,7 @@
       const day = currentDate.getDate();
       const month = currentDate.getMonth() + 1; // يبدأ الشهر من 0، لذلك نقوم بإضافة 1
       const year = currentDate.getFullYear();
-      const dateFormatted = `${day}/${month}/${year}`;
+      const dateFormatted = `${day+2}/${month}/${year}`;
 
 
       // الساعة
@@ -442,7 +486,7 @@
         money: filterarrnum,
         user: arruser,
         dateofregistration: arrtime,
-        total: sum,
+        total: suminvoice,
       }
 
       if (filterarrtext.length == arrindex && filterarrnum.length == arrindex) {
@@ -472,10 +516,10 @@
           else {
             if(+lastindexarr.total != 0){
 
-              newdata.description.unshift('الفاتورة السابقة')
-              newdata.money.unshift(lastindexarr.total)
-              newdata.user.unshift(lastindexarr.date)
-              newdata.dateofregistration.unshift('')
+              // newdata.description.unshift('الفاتورة السابقة')
+              // newdata.money.unshift(lastindexarr.total)
+              // newdata.user.unshift(lastindexarr.date)
+              // newdata.dateofregistration.unshift('')
               // newdata.total += lastindexarr.total
 
               if(OptInvoice == "inv_unprice")
