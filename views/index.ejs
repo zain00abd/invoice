@@ -14,14 +14,43 @@
 
       <div class="mb-5" style="margin-top: 25px;">
 
-        <% arr.forEach(user => { %>
-         
+        <% arr.forEach((user,index) => { %>
+
           <ul class="list-group">
               <li class="list-group-item d-flex justify-content-between" style="font-weight: 600; margin: 5px; margin-top: 10px;" id="div_user">
                 <div class=" d-flex justify-content-between" style="display: flex; width: 45%;">
                   <a href="/info/<%= user._id %>" class=""><i class="fa-solid fa-circle-info fa-2xl" style="color: #dbac00;"></i></a>
                   <div class="vr"></div>
-                  <a href="/view/<%= user._id %>" class="col-6  badge bg-danger rounded-pill" style="font-size:14px; letter-spacing: 1.3px; text-decoration: none;"> <%= user.invoicesprice - user.invoicespay %> </a>
+                  <a href="/view/<%= user._id %>" class="col-6  badge bg-danger rounded-pill" style="font-size:14px; letter-spacing: 1.3px; text-decoration: none;">
+                    <% let arrlop = '' %>
+                    <% arrlop=JSON.parse(user.arrinvoce) %>
+                    
+                    
+                    
+                    <% let total = 0 %>
+                    <% for( let i=0; i < arrlop.length; i++ ) { %>
+                      
+                      
+                      <% for( let index = 0; index < arrlop[i].description.length; index++ ) { %>
+
+                        
+
+                        <% if (arrlop[i].description[index] != "تسديد مبلغ") { %>
+                          <% total += +arrlop[i].money[index] %>
+                         <% } else { %>
+                          <% total -= +arrlop[i].money[index] %>
+                          
+                        <% } %>
+
+                      <% } %>
+                      <% } %>
+                      <%= total %>
+                      
+                      
+
+
+                    
+                  </a>
                 </div>
                 <%= user.name %>
               </li>     

@@ -7,3 +7,12 @@
 .selected {
     background-color: blue;
 }
+
+#inv_Ms:focus{
+  background-color: rgba(255, 187, 0, 0.521);
+}
+
+#inv_Ms{
+  outline: none;
+  border: none;
+}

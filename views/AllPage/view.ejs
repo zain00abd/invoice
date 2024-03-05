@@ -7,6 +7,7 @@
   <title>View User</title>
   <link rel="stylesheet" href="/JSBootstrapFile/css/bootstrap.css">
   <link rel="stylesheet" href="/fonter/css/all.min.css">
+  <link rel="stylesheet" href="/stylecss/styindex.css">
   <style>
     input {
       background: none;
@@ -18,6 +19,31 @@
 </head>
 
 <body style="background-color: rgb(230, 240, 252); font-weight: 600;">
+
+  <div class="modal fade" id="staticBackdrop" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="direction: rtl;" data-bs-theme="dark"> 
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 text-white" id="exampleModalLabel">حذف العميل</h1>
+        </div>
+  
+        <div class="modal-body text-center">
+          <button class="btn btn-success d-block mt-3 m-auto w-50" style="height: 50px;" >button</button>
+          <button class="btn btn-danger d-block mt-3 m-auto w-50" style="height: 50px;" >button</button>
+          <button class="btn btn-warning d-block mt-3 m-auto w-50" style="height: 50px;" >button</button>
+
+        </div>
+
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button id="btn_name" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+    Launch static backdrop modal
+  </button>
+
   <%- include('../components/nav1.ejs',{addnone:"block"}) %>
   <form action="/edit/<%= arr._id %>?_method=PUT" method="post">
     <p class="d-none" id="date_today">
@@ -114,9 +140,10 @@
 
 
                           <li class="list-group-item d-flex justify-content-between align-items-center <%= dis == "تسديد مبلغ" ? "list-group-item-success" : "" %> <%= dis == "الفاتورة السابقة" ? "list-group-item-warning" : "" %> <%= dis != "الفاتورة السابقة" && dis != "تسديد مبلغ" ? "list-group-item-danger" : "" %>">
-                            <div style="width: 50%; text-align: center;" id="inv_Ms"><%= dis %></div>
+                            <div contentEditable="<%= dis == "الفاتورة السابقة" ? "false" : "true" %>" style="width: 50%; text-align: center;" id="inv_Ms" onkeyup="updatedata(this.innerHTML,'inp_up_description-<%= index %>_<%= i %>')"><%= dis %></div>
+                            <!-- <input type="text" value="<%= dis %>" style="width: 50%; text-align: center;" onkeyup="updatedata(this.value,'inp_up_d-<%= index %>_<%= i %>')" id="inv_Ms"> -->
                             <div class="vr"></div>
-                            <div style="width: 50%; text-align: center;" id="inv_Ms"><%= mon %></div>
+                            <div contentEditable="<%= dis == "الفاتورة السابقة" ? "false" : "true" %>" style="width: 50%; text-align: center;" id="inv_Ms" onkeyup="updatedata(this.innerHTML,'inp_up_money-<%= index %>_<%= i %>')"  name="<%= dis == "الفاتورة السابقة" ? `top_inv_${index}` : "" %>"><%= mon %></div>
                             <div class="vr"></div>
                             <div class="dropend" style="width: 50%; text-align: center;">
                               <button style="border: none; outline: none; background: none; font-weight: 500;"
@@ -149,7 +176,7 @@
                             <div class="" style="background-color: black; font-size: 2px; height: 22px;">|</div>
                             <div style="width: 50%; text-align: center;">
                               الاجمالي:
-                              <small class="text-danger">
+                              <small class="text-danger" id="<%= `total_invoice_${index}` %>">
                                 <%= totalinvoice %>
                               </small>
                             </div>
@@ -246,7 +273,7 @@
 
               </ul>
             </div>
-
+            <button onclick="datature()">df</button>
             <a class="d-none" href="/view/<%= arr._id %>" role="button" id="btn_close"> الغاء </a>
           </div>
           
@@ -429,6 +456,36 @@
       plusarr(filterarrnum.reduce((accumulator, currentValue) => accumulator + currentValue, 0))
 
     }
+      let idubdate 
+
+    function updatedata(value,id){
+      idubdate = id.split("-")[0].split("_")[2]
+      let indexubdate = id.split("-")[1]
+      let totalfocas = document.getElementById(`total_invoice_${indexubdate.split("_")[0]}`)
+      console.log(indexubdate.split("_")[0])
+      let totalnow
+
+
+      let indexubdate1 = id.split("-")[0]
+      if(idubdate == "description"){
+
+        arrAllInvoice[indexubdate.split("_")[0]].description[indexubdate.split("_")[1]] = value
+      }
+      else{
+        arrAllInvoice[indexubdate.split("_")[0]].money[indexubdate.split("_")[1]] = +value
+        if(indexubdate.split("_")[0] > 0){
+
+          let totaltop = document.getElementsByName(`top_inv_${indexubdate.split("_")[0]}`)[0].innerHTML
+          totalnow = arrAllInvoice[indexubdate.split("_")[0]].money.reduce((accumulator, currentValue) => accumulator + currentValue, 0) + +totaltop
+        }
+        else{
+          totalnow = arrAllInvoice[indexubdate.split("_")[0]].money.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
+        }
+        totalfocas.innerHTML = totalnow
+      }
+    }
+
+    
 
     let datareq = document.getElementById("data_req")
     let InpAllinvoice = document.getElementById("inp_allinvoice")
