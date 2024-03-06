@@ -15,6 +15,9 @@
       border: none;
       font-weight: 500;
     }
+    *{
+      font-weight: 600;
+    }
   </style>
 </head>
 
@@ -24,25 +27,42 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5 text-white" id="exampleModalLabel">حذف العميل</h1>
+          <h1 class="modal-title fs-5 text-white text-center m-auto" id="exampleModalLabel"> اختر نوع العملية </h1>
         </div>
   
         <div class="modal-body text-center">
-          <button class="btn btn-success d-block mt-3 m-auto w-50" style="height: 50px;" >button</button>
-          <button class="btn btn-danger d-block mt-3 m-auto w-50" style="height: 50px;" >button</button>
-          <button class="btn btn-warning d-block mt-3 m-auto w-50" style="height: 50px;" >button</button>
+          <div class="row p-3 m-auto justify-content-between">
+
+            <button class="btn btn-success m-auto w-60 col-5" style="height: 90px; padding: 25px;" id="inv_price" onclick="btnclose1.click(), addinp(this.id)"> 
+              تسديد مبلغ
+              <i class="fa-solid fa-hand-holding-dollar fa-xl" style="height: 50px; font-weight: 600;"></i>
+              
+            </button>
+
+            <button class="btn btn-danger m-auto w-60 col-5" style="height: 90px; padding: 25px;" id="inv_unprice" onclick="btnclose1.click(), addinp(this.id)">
+              
+              اضافة فاتورة
+              <i class="fa-solid fa-file-circle-plus fa-xl" style="height: 50px; font-weight: 600;"></i>
+              
+            </button>
+
+          </div>
+
+          <button class="btn btn-warning d-block mt-3 m-auto w-50" style="height: 50px; font-weight: 600;" onclick="btnclose1.click(), openUpdate()">
+            تعديل 
+            <i class="fa-solid fa-pen-to-square fa-xl" style="color: #000000;"></i>
+          </button>
 
         </div>
+        
 
         <div class="modal-footer">
+          <button id="btn_cname" type="button" class="btn btn-secondary text-center m-auto" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
   </div>
 
-  <button id="btn_name" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-    Launch static backdrop modal
-  </button>
 
   <%- include('../components/nav1.ejs',{addnone:"block"}) %>
   <form action="/edit/<%= arr._id %>?_method=PUT" method="post">
@@ -77,7 +97,7 @@
 
                     <ul class="list-group mb-4 mt-4
                     <%= index == arrlop.length-1 ? "opacity-100 shadow-lg bg-body-tertiary rounded" : "" %>"
-                    style="padding: 0px; <%= index != arrlop.length-1 ? "opacity:65%;" : "" %>"
+                    style="padding: 0px; <%= index != arrlop.length-1 ? "opacity:70%;" : "" %>"
                     >
 
                       <!-- top invoce -->
@@ -141,9 +161,9 @@
 
                           <li class="list-group-item d-flex justify-content-between align-items-center <%= dis == "تسديد مبلغ" ? "list-group-item-success" : "" %> <%= dis == "الفاتورة السابقة" ? "list-group-item-warning" : "" %> <%= dis != "الفاتورة السابقة" && dis != "تسديد مبلغ" ? "list-group-item-danger" : "" %>">
                             <div contentEditable="<%= dis == "الفاتورة السابقة" ? "false" : "true" %>" style="width: 50%; text-align: center;" id="inv_Ms" onkeyup="updatedata(this.innerHTML,'inp_up_description-<%= index %>_<%= i %>')"><%= dis %></div>
-                            <!-- <input type="text" value="<%= dis %>" style="width: 50%; text-align: center;" onkeyup="updatedata(this.value,'inp_up_d-<%= index %>_<%= i %>')" id="inv_Ms"> -->
                             <div class="vr"></div>
-                            <div contentEditable="<%= dis == "الفاتورة السابقة" ? "false" : "true" %>" style="width: 50%; text-align: center;" id="inv_Ms" onkeyup="updatedata(this.innerHTML,'inp_up_money-<%= index %>_<%= i %>')"  name="<%= dis == "الفاتورة السابقة" ? `top_inv_${index}` : "" %>"><%= mon %></div>
+                            <!-- <div contentEditable="<%= dis == "الفاتورة السابقة" ? "false" : "true" %>" style="width: 50%; text-align: center;" id="inv_Ms" onkeyup="updatedata(this.innerHTML,'inp_up_money-<%= index %>_<%= i %>')"  name="<%= dis == "الفاتورة السابقة" ? `top_inv_${index}` : "" %>"><%= mon %></div> -->
+                            <input type="number" value="<%= mon %>" style="width: 50%; text-align: center;" onkeyup="updatedata(this.value,'inp_up_d-<%= index %>_<%= i %>')" id="inv_Ms">
                             <div class="vr"></div>
                             <div class="dropend" style="width: 50%; text-align: center;">
                               <button style="border: none; outline: none; background: none; font-weight: 500;"
@@ -185,49 +205,57 @@
                     </ul>
 
                       <% } %>
+                      <% } else { %>
+                       <h3 style=" margin: auto; text-align: center; color: rgba(255, 0, 0, 0.623); padding: 80px;"> لم يتم تسجيل فواتير بعد </h3>
                         <% } %>
 
                           <!-- style add invoice -->
-                          <ul class="list-group mt-4 d-none" id="inv_new" style="left: 20px; position: relative;">
-
-                            <!-- top invoce -->
-                            <li class="list-group-item d-flex justify-content-between align-items-center" id="dis_mode">
-                              <div style="width: 50%; text-align: center;">
-                                الوصف
+                          
+                          <div class="" style="background-color: rgba(196, 196, 196, 0.349); margin: 20px ,0px; border-radius:15px ;">
+                            <ul class="list-group mt-4 d-none" id="inv_new" style="left: 20px; position: relative;">
+                              <h3 class="text-center text-white">
+                                اضافة فاتورة
+                              </h3>
+                            
+                              <!-- top invoce -->
+                              <li class="list-group-item d-flex justify-content-between align-items-center" id="dis_mode">
+                                <div style="width: 50%; text-align: center;">
+                                  الوصف
+                                </div>
+                                <div class="vr"></div>
+                            
+                                <div style="width: 50%; text-align: center;">
+                                  المبلغ
+                                </div>
+                              </li>
+                            
+                            
+                              <!--** body invoce **-->
+                              <div id="d_1">
                               </div>
-                              <div class="vr"></div>
-
-                              <div style="width: 50%; text-align: center;">
-                                المبلغ
-                              </div>
-                            </li>
-
-
-                            <!--** body invoce **-->
-                            <div id="d_1">
-                            </div>
-                            <!--** body invoce **-->
-
-
-                            <!-- end invoce -->
-                            <li
-                              class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary">
-                              <div style="width: 50%; text-align: center; color: rgb(0, 110, 46);" id="date">
-
-                              </div>
-
-                              <button id="btn_addinv" type="button" onclick="addinp(G_invoce = 'inv_unprice')"
-                                class="btn btn-warning rounded-circle"><i class="fa-solid fa-plus"></i></button>
-
-                              <div style="width: 50%; text-align: center;">
-                                الاجمالي:
-                                <small class="text-danger" id="total_inv">
-                                  0
-                                </small>
-                              </div>
-                            </li>
-
-                          </ul>
+                              <!--** body invoce **-->
+                            
+                            
+                              <!-- end invoce -->
+                              <li
+                                class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary">
+                                <div style="width: 50%; text-align: center; color: rgb(0, 110, 46);" id="date1">
+                                  
+                                </div>
+                            
+                                <button id="btn_addinv" type="button" onclick="addinp(G_invoce = 'inv_unprice')"
+                                  class="btn btn-warning rounded-circle"><i class="fa-solid fa-plus"></i></button>
+                            
+                                <div style="width: 50%; text-align: center;">
+                                  الاجمالي:
+                                  <small class="text-danger" id="total_inv">
+                                    0
+                                  </small>
+                                </div>
+                              </li>
+                            
+                            </ul>
+                          </div>
 
       </div>
 
@@ -243,37 +271,23 @@
             <a class="d-none" role="button" id="btn_save" onclick="datapost()">حفظ التغييرات</a>
           </div>
 
+          <!-- <button onclick="datature()">df</button> -->
           <!-- <button class=" rounded-circle" style="position: relative; bottom: 30px;background: linear-gradient(to right, #0f0094,rgb(0, 32, 102)); border: none; transform: scale(1.5);"><i class="fa-solid fa-plus" style="color: #FFD43B;"></i></button> -->
 
           <div style="width: 45%; text-align: center;" id="gro_btn_invoice">
 
             <div class="dropup-center dropup" id="btn_section" style="width: 100%;">
-              <button style="width: 100%; font-weight: 600; letter-spacing: 1.1px;" class="btn btn-danger" type="button"
-                data-bs-toggle="dropdown" aria-expanded="false">
+
+              <button style="width: 100%; font-weight: 600; letter-spacing: 1.1px;" class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                 <i class="fa-solid fa-sack-dollar fa-lg" style="color: #ffffff;"></i>
                 <%= totalAll %>
               </button>
+
+
               <small class="d-none" id="ttt-1"><%=totalAll%></small>
-              <ul class="dropdown-menu">
-                <li>
-                  <button type="button" id="inv_price" onclick="addinp(this.id)"
-                    class="dropdown-item text-center text-success" style="font-weight: 600;">
-                    <i class="fa-solid fa-hand-holding-dollar" style="color: #198754;"></i>
-                    تسديد مبلغ
-                  </button>
-                </li>
 
-                <li>
-                  <button type="button" id="inv_unprice" onclick="addinp(this.id)"
-                    class="dropdown-item text-center text-danger" style="font-weight: 600;">
-                    <i class="fa-solid fa-file-circle-plus" style="color: #dc3545;"></i>
-                    اضافة فاتورة
-                  </button>
-                </li>
 
-              </ul>
             </div>
-            <button onclick="datature()">df</button>
             <a class="d-none" href="/view/<%= arr._id %>" role="button" id="btn_close"> الغاء </a>
           </div>
           
@@ -290,7 +304,8 @@
   <script>
 
     let suminvoice = +document.getElementById("ttt-1").innerHTML
-
+    let btnclose1 = document.getElementById("btn_cname")
+    let body = document.querySelector("body")
     let datetoday = document.getElementById('date_today').innerHTML.split("|")
     let datetoday1 = document.getElementById('date_today').innerHTML.split("|")
     let btnprice = document.getElementById("inv_price")
@@ -300,10 +315,10 @@
     let btnsave = document.getElementById(`btn_save`)
     let btnwhats = document.getElementById(`btn_whats`)
     let dismode = document.getElementById(`dis_mode`)
-    // let grobtninvoice = document.getElementById(`gro_btn_invoice`)
     let btnsection = document.getElementById(`btn_section`)
     let btnclose = document.getElementById(`btn_close`)
     let btnaddinv = document.getElementById(`btn_addinv`)
+    let date1 = document.getElementById(`date1`)
 
     let index = 0;
     let arrindex = 0;
@@ -340,6 +355,8 @@
         newInputtitle.readOnly = true
         btnaddinv.style.display = 'none'
         setarr("تسديد مبلغ", "inv_text_0")
+        body.style.backgroundColor = '#e6fcec'
+
       }
 
 
@@ -395,6 +412,8 @@
         newLi.classList.add('list-group-item-danger');
         dismode.classList.add('list-group-item-danger');
         addbtndelete()
+        body.style.backgroundColor = '#fce6e6'
+
       }
 
       function addbtndelete() {
@@ -459,6 +478,7 @@
       let idubdate 
 
     function updatedata(value,id){
+
       idubdate = id.split("-")[0].split("_")[2]
       let indexubdate = id.split("-")[1]
       let totalfocas = document.getElementById(`total_invoice_${indexubdate.split("_")[0]}`)
@@ -483,9 +503,15 @@
         }
         totalfocas.innerHTML = totalnow
       }
+      
     }
 
-    
+    function openUpdate(){
+      body.style.backgroundColor = '#f8edc7'
+
+      
+    }
+
 
     let datareq = document.getElementById("data_req")
     let InpAllinvoice = document.getElementById("inp_allinvoice")
@@ -502,14 +528,14 @@
     }
 
     let lastindexarr = arrAllInvoice[arrAllInvoice.length -1]
+    // اليوم/الشهر/السنة
+    const currentDate = new Date();
+    const day = currentDate.getDate();
+    const month = currentDate.getMonth() + 1; // يبدأ الشهر من 0، لذلك نقوم بإضافة 1
+    const year = currentDate.getFullYear();
+    const dateFormatted = `${day+2}/${month}/${year}`;
+    date1.innerHTML = dateFormatted
     function datapost() {
-      // اليوم/الشهر/السنة
-      const currentDate = new Date();
-      const day = currentDate.getDate();
-      const month = currentDate.getMonth() + 1; // يبدأ الشهر من 0، لذلك نقوم بإضافة 1
-      const year = currentDate.getFullYear();
-      const dateFormatted = `${day+2}/${month}/${year}`;
-
 
       // الساعة
       let hours = currentDate.getHours();
