@@ -510,8 +510,7 @@
         let inpStyle = document.getElementsByName(name)[0].parentElement
         if(isNaN(value)){
           console.log("error" + '/  ' + value)
-          inpStyle.classList.remove("inp_focas")
-          inpStyle.classList.add("inp_focas_error")
+          inpStyle.style.backgroundColor = '#ff0000be'
 
           if(!arrerror.includes(indexubdate))
           arrerror.push(indexubdate)
@@ -524,8 +523,8 @@
           arrerror = arrerror.filter(item => item !== indexubdate);
           console.log(arrerror)
 
-          inpStyle.classList.add("inp_focas")
-          inpStyle.classList.remove("inp_focas_error")
+          inpStyle.style.backgroundColor = ''
+
         }
         // console.log("price")
         arrAllInvoice[indexubdate.split("_")[0]].money[indexubdate.split("_")[1]] = +value
