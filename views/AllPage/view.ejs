@@ -102,7 +102,7 @@
 
                       <!-- top invoce -->
                       <li
-                        class="list-group-item d-flex justify-content-between align-items-center list-group-item-primary border border-1 border-primary mb-1">
+                        class="list-group-item d-flex justify-content-between align-items-center list-group-item-primary border border-1 border-primary">
                         <div style="width: 50%; text-align: center;">
                           الوصف
                         </div>
@@ -160,10 +160,11 @@
 
 
                           <li class="list-group-item d-flex justify-content-between align-items-center <%= dis == "تسديد مبلغ" ? "list-group-item-success" : "" %> <%= dis == "الفاتورة السابقة" ? "list-group-item-warning" : "" %> <%= dis != "الفاتورة السابقة" && dis != "تسديد مبلغ" ? "list-group-item-danger" : "" %>">
-                            <div contentEditable="<%= dis == "الفاتورة السابقة" ? "false" : "true" %>" style="width: 50%; text-align: center;" id="inv_Ms" onkeyup="updatedata(this.innerHTML,'inp_up_description-<%= index %>_<%= i %>')"><%= dis %></div>
+                            <input class="" type="text" style="width: 50%; text-align: center;" id="inv_Ms" onkeyup="updatedata(this.value,'inp_up_description-<%= index %>_<%= i %>')" value="<%= dis %>" readonly>
+                            <!-- <div contentEditable="<%= dis == "الفاتورة السابقة" ? "false" : "true" %>" style="width: 50%; text-align: center;" id="inv_Ms" onkeyup="updatedata(this.innerHTML,'inp_up_description-<%= index %>_<%= i %>')"><%= dis %></div> -->
                             <div class="vr"></div>
-                            <!-- <div contentEditable="<%= dis == "الفاتورة السابقة" ? "false" : "true" %>" style="width: 50%; text-align: center;" id="inv_Ms" onkeyup="updatedata(this.innerHTML,'inp_up_money-<%= index %>_<%= i %>')"  name="<%= dis == "الفاتورة السابقة" ? `top_inv_${index}` : "" %>"><%= mon %></div> -->
-                            <input type="number" value="<%= mon %>" style="width: 50%; text-align: center;" onkeyup="updatedata(this.value,'inp_up_d-<%= index %>_<%= i %>')" id="inv_Ms">
+                            <input class="" type="text" name="<%= dis == "الفاتورة السابقة" ? `top_inv_${index}` : `inp_${index}-${i}` %>" style="width: 50%; text-align: center;" id="inv_Ms" onkeyup="updatedata(this.value,'inp_up_money-<%= index %>_<%= i %>', this.name)" value="<%= mon %>" readonly>
+                            <!-- <input type="text" value="<%= mon %>" style="width: 50%; text-align: center;" onkeyup="updatedata(this.innerHTML,'inp_up_money-<%= index %>_<%= i %>')" id="inv_Ms"> -->
                             <div class="vr"></div>
                             <div class="dropend" style="width: 50%; text-align: center;">
                               <button style="border: none; outline: none; background: none; font-weight: 500;"
@@ -189,7 +190,7 @@
 
                           <!-- end invoce -->
                           <li
-                            class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary border border-1 border-secondary-subtle mt-1">
+                            class="list-group-item d-flex justify-content-between align-items-center list-group-item-secondary border border-1 border-secondary-subtle">
                             <div class="" style="width: 50%; text-align: center;" id="date">
                               <%= arrlop[index].date %>
                             </div>
@@ -318,19 +319,29 @@
     let btnsection = document.getElementById(`btn_section`)
     let btnclose = document.getElementById(`btn_close`)
     let btnaddinv = document.getElementById(`btn_addinv`)
+    let invMs = document.querySelectorAll("#inv_Ms")
     let date1 = document.getElementById(`date1`)
 
     let index = 0;
     let arrindex = 0;
     let OptInvoice;
 
+    function btnRole(fun){
+      btnsave.className = 'btn btn-primary w-100'
+      btnsave.setAttribute("onclick", `${fun}`)
+      btnclose.className = 'btn btn-danger w-100'
+      btnwhats.className = 'd-none'
+      btnsection.className = 'd-none'
+    }
+
     function addinp(G_invoce) {
 
       OptInvoice = G_invoce
 
-
+      btnRole("datapost()")
 
       btnsave.className = 'btn btn-primary w-100'
+      btnsave.setAttribute("onclick", "datapost()")
       btnclose.className = 'btn btn-danger w-100'
       btnwhats.className = 'd-none'
       btnsection.className = 'd-none'
@@ -475,14 +486,17 @@
       plusarr(filterarrnum.reduce((accumulator, currentValue) => accumulator + currentValue, 0))
 
     }
-      let idubdate 
 
-    function updatedata(value,id){
+    let idubdate 
+    let arrerror = [];
+
+
+    function updatedata(value,id,name){
 
       idubdate = id.split("-")[0].split("_")[2]
       let indexubdate = id.split("-")[1]
+      console.log(indexubdate)
       let totalfocas = document.getElementById(`total_invoice_${indexubdate.split("_")[0]}`)
-      console.log(indexubdate.split("_")[0])
       let totalnow
 
 
@@ -492,26 +506,59 @@
         arrAllInvoice[indexubdate.split("_")[0]].description[indexubdate.split("_")[1]] = value
       }
       else{
-        arrAllInvoice[indexubdate.split("_")[0]].money[indexubdate.split("_")[1]] = +value
-        if(indexubdate.split("_")[0] > 0){
 
-          let totaltop = document.getElementsByName(`top_inv_${indexubdate.split("_")[0]}`)[0].innerHTML
-          totalnow = arrAllInvoice[indexubdate.split("_")[0]].money.reduce((accumulator, currentValue) => accumulator + currentValue, 0) + +totaltop
+        let inpStyle = document.getElementsByName(name)[0].parentElement
+        if(isNaN(value)){
+          console.log("error" + '/  ' + value)
+          inpStyle.classList.remove("inp_focas")
+          inpStyle.classList.add("inp_focas_error")
+
+          if(!arrerror.includes(indexubdate))
+          arrerror.push(indexubdate)
+
+          console.log(arrerror)
+
+
         }
         else{
-          totalnow = arrAllInvoice[indexubdate.split("_")[0]].money.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
+          arrerror = arrerror.filter(item => item !== indexubdate);
+          console.log(arrerror)
+
+          inpStyle.classList.add("inp_focas")
+          inpStyle.classList.remove("inp_focas_error")
         }
-        totalfocas.innerHTML = totalnow
+        // console.log("price")
+        arrAllInvoice[indexubdate.split("_")[0]].money[indexubdate.split("_")[1]] = +value
+        
       }
       
     }
 
+    // let arrerr;
+    // arrerr = ['1_2','1_3']
     function openUpdate(){
       body.style.backgroundColor = '#f8edc7'
+      btnRole("datature()")
+      for( i = 0; i < invMs.length; i++){
 
+        if(invMs[i].value != "الفاتورة السابقة"){
+
+          invMs[i].removeAttribute("readonly")
+          invMs[i].classList.add("inp_focas")
+          invMs[i].parentElement.parentElement.parentElement.style.opacity = '100%'
+        }
+        else{
+          invMs[i].parentElement.classList.add("d-none")
+
+          
+          i++
+        }
+
+      };
       
     }
 
+    console.log(0 % 2)
 
     let datareq = document.getElementById("data_req")
     let InpAllinvoice = document.getElementById("inp_allinvoice")
@@ -675,8 +722,11 @@
       
     }
     function datature() {
-      inpReqAddinvoice.value = JSON.stringify(arrAllInvoice)
-      document.getElementById('myForm').click()
+      if(arrerror.length == 0){
+
+        inpReqAddinvoice.value = JSON.stringify(arrAllInvoice)
+        document.getElementById('myForm').click()
+      }
     }
 
 
@@ -698,7 +748,6 @@
     let mussegg
     let musseginv;
     let totalprice = 0;
-    let invMs = document.querySelectorAll("#inv_Ms")
 
     btnwhats.addEventListener("click",(e) =>{
     musseginv = ''
@@ -706,7 +755,7 @@
     for(i = 0; i < invMs.length; i++){
       if(invMs[i].innerHTML == 'تسديد مبلغ'){
         musseginv = ''
-        totalprice -= +invMs[i+1].innerHTML
+        totalprice -= +invMs[i+1].value
         if(totalprice != 0){
         musseginv = `*_حساب قديم_ => ${totalprice}ج*`
         }
@@ -715,8 +764,8 @@
       else if(invMs[i].innerHTML != 'الفاتورة السابقة'){
         
         musseginv += `
-${invMs[i].innerHTML} => ${invMs[i+1].innerHTML}ج`
-    totalprice += +invMs[i+1].innerHTML
+${invMs[i].innerHTML} => ${invMs[i+1].value}ج`
+    totalprice += +invMs[i+1].value
       }
 
     
