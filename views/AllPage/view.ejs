@@ -163,7 +163,7 @@
                             <input class="" type="text" style="width: 50%; text-align: center;" id="inv_Ms" onkeyup="updatedata(this.value,'inp_up_description-<%= index %>_<%= i %>')" value="<%= dis %>" readonly>
                             <!-- <div contentEditable="<%= dis == "الفاتورة السابقة" ? "false" : "true" %>" style="width: 50%; text-align: center;" id="inv_Ms" onkeyup="updatedata(this.innerHTML,'inp_up_description-<%= index %>_<%= i %>')"><%= dis %></div> -->
                             <div class="vr"></div>
-                            <input class="" type="text" name="<%= dis == "الفاتورة السابقة" ? `top_inv_${index}` : `inp_${index}-${i}` %>" style="width: 50%; text-align: center;" id="inv_Ms" onkeyup="updatedata(this.value,'inp_up_money-<%= index %>_<%= i %>', this.name)" value="<%= mon %>" readonly>
+                            <input class="" type="text" name="<%= dis == "الفاتورة السابقة" ? `top_inv_${index}` : `inp_${index}-${i}` %>" pattern="[0-9]*" inputmode="numeric" style="width: 50%; text-align: center;" id="inv_Ms" onkeyup="updatedata(this.value,'inp_up_money-<%= index %>_<%= i %>', this.name)" value="<%= mon %>" readonly>
                             <!-- <input type="text" value="<%= mon %>" style="width: 50%; text-align: center;" onkeyup="updatedata(this.innerHTML,'inp_up_money-<%= index %>_<%= i %>')" id="inv_Ms"> -->
                             <div class="vr"></div>
                             <div class="dropend" style="width: 50%; text-align: center;">
