@@ -752,7 +752,7 @@
     musseginv = ''
     totalprice = 0
     for(i = 0; i < invMs.length; i++){
-      if(invMs[i].innerHTML == 'تسديد مبلغ'){
+      if(invMs[i].value == 'تسديد مبلغ'){
         musseginv = ''
         totalprice -= +invMs[i+1].value
         if(totalprice != 0){
@@ -760,10 +760,10 @@
         }
 
       } 
-      else if(invMs[i].innerHTML != 'الفاتورة السابقة'){
+      else if(invMs[i].value != 'الفاتورة السابقة'){
         
         musseginv += `
-${invMs[i].innerHTML} => ${invMs[i+1].value}ج`
+${invMs[i].value} => ${invMs[i+1].value}ج`
     totalprice += +invMs[i+1].value
       }
 
