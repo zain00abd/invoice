@@ -156,17 +156,25 @@
                             <% totalinvoice += mon %>
                             <% } else { %>
                               <% totalinvoice -= mon %>
-                          <% } %>
+                              <% } %>
+                              
+                              
+                              <li class="list-group-item d-flex justify-content-between align-items-center <%= dis == "تسديد مبلغ" ? "list-group-item-success" : "" %> <%= dis == "الفاتورة السابقة" ? "list-group-item-warning" : "" %> <%= dis != "الفاتورة السابقة" && dis != "تسديد مبلغ" ? "list-group-item-danger" : "" %>">
+                                <input class="" type="text" style="width: 50%; text-align: center;" id="inv_Ms" onkeyup="updatedata(this.value,'inp_up_description-<%= index %>_<%= i %>')" value="<%= dis %>" readonly>
+
+                                <div class="vr"></div>
+
+                                
+                                <input class="" type="text" name="<%= dis == "الفاتورة السابقة" ? `top_inv_${index}` : `inp_${index}-${i}` %>" pattern="[0-9]*" inputmode="numeric" style="width: 50%; text-align: center;" id="inv_Ms" onkeyup="updatedata(this.value,'inp_up_money-<%= index %>_<%= i %>', this.name)" value="<%= mon %>" readonly> 
 
 
-                          <li class="list-group-item d-flex justify-content-between align-items-center <%= dis == "تسديد مبلغ" ? "list-group-item-success" : "" %> <%= dis == "الفاتورة السابقة" ? "list-group-item-warning" : "" %> <%= dis != "الفاتورة السابقة" && dis != "تسديد مبلغ" ? "list-group-item-danger" : "" %>">
-                            <input class="" type="text" style="width: 50%; text-align: center;" id="inv_Ms" onkeyup="updatedata(this.value,'inp_up_description-<%= index %>_<%= i %>')" value="<%= dis %>" readonly>
-                            <!-- <div contentEditable="<%= dis == "الفاتورة السابقة" ? "false" : "true" %>" style="width: 50%; text-align: center;" id="inv_Ms" onkeyup="updatedata(this.innerHTML,'inp_up_description-<%= index %>_<%= i %>')"><%= dis %></div> -->
                             <div class="vr"></div>
-                            <input class="" type="text" name="<%= dis == "الفاتورة السابقة" ? `top_inv_${index}` : `inp_${index}-${i}` %>" pattern="[0-9]*" inputmode="numeric" style="width: 50%; text-align: center;" id="inv_Ms" onkeyup="updatedata(this.value,'inp_up_money-<%= index %>_<%= i %>', this.name)" value="<%= mon %>" readonly>
-                            <!-- <input type="text" value="<%= mon %>" style="width: 50%; text-align: center;" onkeyup="updatedata(this.innerHTML,'inp_up_money-<%= index %>_<%= i %>')" id="inv_Ms"> -->
-                            <div class="vr"></div>
-                            <div class="dropend" style="width: 50%; text-align: center;">
+
+                            <button style=" <%= dis == "الفاتورة السابقة" ? 'width: 49%;' : 'width: 25%; margin: 0px 8%;' %> text-align: center; font-weight: 600; border: none; color: #000000;" type="button" class="btn" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" data-bs-content="<%= dateo %>">
+                              <%= useR %>
+                            </button>
+
+                            <!-- <div class="dropend" style="width: 50%; text-align: center;">
                               <button style="border: none; outline: none; background: none; font-weight: 500;"
                                 data-bs-toggle="dropdown">
                                 <%= useR %>
@@ -177,7 +185,8 @@
                                   <%= dateo %>
                                 </p>
                               </div>
-                            </div>
+                            </div> -->
+
                           </li>
                         </div>
 
@@ -258,6 +267,7 @@
                             </ul>
                           </div>
 
+
       </div>
 
 
@@ -300,9 +310,13 @@
 
 
   <script src="/JSBootstrapFile/popper/popper.js"></script>
+  <!-- <script src="/JSBootstrapFile/popper/popper.min.js"></script> -->
   <script src="/JSBootstrapFile/js/bootstrap.js"></script>
+  <!-- <script src="/JSBootstrapFile/js/bootstrap.bundle.min.js"></script> -->
 
   <script>
+const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
 
     let suminvoice = +document.getElementById("ttt-1").innerHTML
     let btnclose1 = document.getElementById("btn_cname")
